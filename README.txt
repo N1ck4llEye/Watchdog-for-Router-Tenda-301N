@@ -1,37 +1,52 @@
-What is your motivation? - Solve problem with router freezes.
-Why did you build this project? - Solve problem with router freezes.
-What problem does it solve? - Solve problem with router freezes.
 
-What did you learn? - How to work with Selenium webdrive on chromium, 
-work with Raspberry oi GPIO, work with sqlite.
-
-What makes your project stand out? - Two ways to solve problem - web and relay way.
-
-1. Project's Title: 
 Watchdog for Router TENDA 301N 
 
-2. Project Description:
+This project is combination of software and hardware technologies which helps you to make automatic reboot system for Router and make simple events journalization.
 
-    What your application does,
-    Why you used the technologies you used,
-    Some of the challenges you faced and features you hope to implement in the future.
+!TENDA 301N has only web interface to communicate with user(no ssh)!
 
-Combination of software and hardware technologies to make automatic reboot system for Router  and make simple journalization of these events.
-    
-Fist of all, TENDA 301N has only web-interface to communicate with (no ssh). That is why only way to make soft reboot is to use web-interface envirement and all actions must execute automaticly in browser. Thats why Selenium web-driver is excellent solution.
+Suitable way to make soft reboot via browser is to use Selenium WebDriver.
+If router freezed, reboot must be made by hardware (arduino relay module).
+For journalization of these events sqlite3 is apropriate library.
+To make automated script for all actions python3 perfectly fit.
 
-Next, in cases when router freezed, reboot must be made by hardware (in our case - arduino relay module is good choice).
+So, Raspberry Pi(Raspberry Pi 3b+) as all-in-one platform is best solution.
 
-For journalization events sqlite3 is apropriate library. 
+To run the Project you will need:
 
-Finally, for able to use two reboot methods one of appropriate platforms is Raspberry Pi(Raspberry Pi 3b+ in our case). For communication with Raspberry and Relay - GPIO, for main script, web-browser actions and enents listing - python3(+built in sqlite3) and Selenuim web-driver for chromium.
-
-4. How to Install and Run the Project:
-
-To run the Project you need:
-
-1) Raspberry Pi 3b+ with SDCard and Installed Rapsbian
+Hardware:
+1) Raspberry Pi 3b+ with mouse, keyboard, monitor, power adapter and SDCard(16GB is best choise) 
 2) 5V Arduino Relay Module (AC range 250V and 10A, DC range 30V and 10A)
-3) Male and Feamale connectors(with respectively diameters of your Router) that has terminals for 2 wires.
+3) Male and Feamale connectors(with respectively connectors diameter of your Router and power adapter) that has terminals for 2 wires.
 4) 3 wires (0.5mm sqr diameter, L~10cm)
 5) 3 arduino F to F jumpers (L~20 cm)
+6) Phillips "plus" screwdriver
+
+Software:
+1) RapspbianOS 
+2) Chromium web browser (Preinstalled in RapsbianOS)
+3) Chromium WebDriver (Version of WebDriver and web browser must be same)
+4) Selenium WebDriver (See link below)
+
+!All connection must execute with unpluged arduino and router power adapters!
+
+To get set you need to connect RapsberriPi GPIO pins(co) and Relay module pins(low-voltage group) using jumpers (GPIO pin 4(5V to VCC), 6(GND to GND) and 12(GPIO 18 to IN)). Using Phillips scredriver to connect terminals(relay module high-voltage group) of F and M connectors using wires (wire 1 - GND line directly F to M terminal, wire 2 - Voltage line F to COM, wire 3 - Voltage line M to NC). 
+
+Insert power adapter to F connector, insert M connetor to router, plug arduino and router adapters in powergrid.
+
+Download project files (unzip them if it was an archive) and write correct path in "eventsinfo.py" and "events_list.py". In "reloader.py" and "whreload.py" write correct Router ip-address, and correct password.
+
+In terminal write:  #crontab -e
+At bottom add new line and write:
+@reboot  ***/reloader.py 
+Reboot your RaspberryPi.
+
+If you want to check list of events, just startup "events_list.py" 
+(via terminal: #python3 ***/events_list.py)
+
+(*** - paths to files respectively).
+
+Useful links:
+https://www.raspberrypi.com/documentation/computers/getting-started.html
+https://selenium-python.readthedocs.io/installation.html
+https://www.researchgate.net/figure/Schematic-zoom-of-the-Raspberry-Pi-3-B-pins-Adapted-from-14_fig2_351755761
